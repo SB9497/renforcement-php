@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voiture</title>
-    <link rel="stylesheet" href="Voiture.css"> <!-- Assurez-vous que ce chemin est correct -->
+    <link rel="stylesheet" href="../css/Voiture.css"> <!-- Assurez-vous que ce chemin est correct -->
 </head>
 <body>
 <header>
@@ -30,14 +30,17 @@
             $pdo = new PDO('mysql:host=localhost;dbname=projet', 'root', 'root');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Requête SQL pour récupérer les voitures
+            // Préparation de la requête SQL pour récupérer les voitures
             $sql = "SELECT marque, modele, annee, prix, couleur, image_url FROM voiture";
-            $stmt = $pdo->query($sql); // Exécution de la requête SQL
+            $stmt = $pdo->prepare($sql);
+            
+            // Exécuter la requête
+            $stmt->execute();
 
             // Boucler sur les résultats
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 // Créer un objet Voiture pour chaque résultat
-                $voiture = new voiture($row['marque'], $row['modele'], $row['prix'], $row['couleur'], $row['annee'], $row['image_url']);
+                $voiture = new Voiture($row['marque'], $row['modele'], $row['prix'], $row['couleur'], $row['annee'], $row['image_url']);
                 $voiture->afficher(); // Appeler la méthode afficher
             }
         } catch (PDOException $e) {
