@@ -1,6 +1,8 @@
 <?php
 namespace App\Controllers;
+
 class LoginController {
+
     private $loginModel;
 
     public function __construct() {
@@ -40,7 +42,7 @@ class LoginController {
         }
 
         // Charger la vue et passer le message
-        require 'views/login.php';
+        require dirname(__DIR__, 1). '/views/login/index.php';
     }
         // Méthode destructeur pour fermer la connexion à la base de données
          public function __destruct() {
