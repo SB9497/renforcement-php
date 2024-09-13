@@ -47,10 +47,10 @@ class Voiture {
 
     // Méthode pour afficher la voiture
     public function afficher() {
-        echo "Marque: "  $this->marque . "<br>";
-        echo "Modèle: "  $this->modele . "<br>";
-        echo "Année: "  $this->annee . "<br>";
-        echo "Prix: "  $this->prix . " €<br>";
+        echo "Marque: " . $this->marque . "<br>";
+        echo "Modèle: " . $this->modele . "<br>";
+        echo "Année: " . $this->annee . "<br>";
+        echo "Prix: " . $this->prix . " €<br>";
 
     }
 }

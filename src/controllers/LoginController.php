@@ -1,6 +1,5 @@
 <?php
-require_once 'models/LoginModel.php';
-
+namespace App\Controllers;
 class LoginController {
     private $loginModel;
 
@@ -33,8 +32,18 @@ class LoginController {
             }
         }
 
+
+
         // Charger la vue et passer le message
         require 'views/login.php';
     }
+
+            // Méthode destructeur pour fermer la connexion à la base de données
+            public function __destruct() {
+                $this->loginModel = null;
+         
+                // Message optionnel pour confirmer la fermeture (pour debug)
+                echo "Connexion à la base de données fermée.<br>";
+            }
 }
-?>
+
