@@ -12,38 +12,42 @@ class LoginController {
         $message = "";
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+            $elmail = $_POST['email'];
+            $email = htmlspecialchars(filter_var($elmail, FILTER_SANITIZE_EMAIL));
+            $motDePasse = $_POST['password'];
+            $password = htmlspecialchars($motDePasse);
 
             // Récupérer l'utilisateur à partir du modèle
             $user = $this->loginModel->findUserByEmail($email);
 
-            if ($user) {
+            // Vérification si l'email existe
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                
+                // Vérification du mot de passe
                 if (password_verify($password, $user['mot_de_passe'])) {
                     session_start();
                     $_SESSION['user_id'] = $user['id'];
                     header("Location: index.php");
                     exit();
                 } else {
-                    $message = "Mot de passe incorrect.";
+                    // problème mot de passe
+                    $message = "Identifiants invalides.";
                 }
             } else {
-                $message = "Email non trouvé.";
+                // problème email
+                $message = "Identifiants invalides.";
             }
         }
-
-
 
         // Charger la vue et passer le message
         require 'views/login.php';
     }
-
-            // Méthode destructeur pour fermer la connexion à la base de données
-            public function __destruct() {
-                $this->loginModel = null;
+        // Méthode destructeur pour fermer la connexion à la base de données
+         public function __destruct() {
+            $this->loginModel = null;
          
-                // Message optionnel pour confirmer la fermeture (pour debug)
-                echo "Connexion à la base de données fermée.<br>";
-            }
+            // Message optionnel pour confirmer la fermeture (pour debug)
+            echo "Connexion à la base de données fermée.<br>";
+        }
 }
-
+?>
