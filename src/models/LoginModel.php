@@ -3,7 +3,7 @@
 class LoginModel {
     private $connexion;
 
-    public function __construct($host, $dbname, $user, $pass) {
+    public function __construct($host, $dbname,String $user,String $pass) {
         try {
             $this->connexion = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
             $this->connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -13,7 +13,8 @@ class LoginModel {
     }
 
     public function findUserByEmail($email) {
-        $sql = "SELECT * FROM utilisateurs WHERE email = :email";
+
+        $sql = $this ->connexion->prepare ("SELECT * FROM utilisateurs WHERE email = :email");
         $stmt = $this->connexion->prepare($sql);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
