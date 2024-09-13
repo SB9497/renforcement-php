@@ -7,6 +7,7 @@ class Router {
 
     public static function  route($path) {
         // ex ['home', 'index']
+        //aa
         $segments = explode("/", trim($path, '/'));
         $controller_folder = ucfirst(array_shift($segments)); // Home
 
