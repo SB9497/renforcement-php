@@ -9,7 +9,6 @@ class UserController {
     }
 
     public function index() {
-        
         $voitures = $this->userModel->getAllVoitures();
         require dirname(__DIR__,1) . '/views/user.php';
     }
