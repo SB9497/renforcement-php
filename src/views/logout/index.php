@@ -25,11 +25,15 @@ class Logout {
 
     // Méthode pour rediriger après la déconnexion
     public function redirection($url) {
-        header("Location: $url");
-        exit();
+        if (filter_var($url, FILTER_VALIDATE_URL)){
+            header("Location: $url");
+            exit();
+        } else {
+            echo "Url invalide.";
+            exit();
+        }
     }
 }
-
 
 // Créer une instance de Logout
 $logout = new Logout();
@@ -41,5 +45,4 @@ $logout->deconnexion();
 $logout->redirection('index.php');
 
 ?>
-
 <?php include "footer.php" ?> 
