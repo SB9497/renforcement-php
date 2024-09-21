@@ -15,7 +15,8 @@ class controllervoiture
             $pdo = $db->getConnection();
 
             // Préparation de la requête SQL pour récupérer les voitures
-            $sql = "SELECT marque, modele, annee, prix, couleur, image_url FROM voiture";
+            $vts = new PDO('mysql:host=localhost;dbname=projet', 'root', '');
+            $sql = $vts->prepare ("SELECT marque, modele, annee, prix, couleur, image_url FROM voiture");
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
             
