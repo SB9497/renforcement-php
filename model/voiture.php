@@ -28,7 +28,6 @@ class voiture {
         echo '<p>Prix: ' . htmlspecialchars($this->prix) . '€</p>';
         echo '<p>Couleur: ' . htmlspecialchars($this->couleur) . '</p>';
         echo '<p>Année: ' . htmlspecialchars($this->annee) . '</p>';
-        //echo '<a href="#" class="details-button">Voir détails</a>';
         echo '</div>';     
     }
 }

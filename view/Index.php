@@ -26,22 +26,18 @@
         include_once '../model/voiture.php'; 
 
         try {
-            // Connexion à la base de données avec PDO
-            $pdo = new PDO('mysql:host=localhost;dbname=projet', 'root', 'root');
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            // Préparation de la requête SQL pour récupérer les voitures
+            // Connexion à la base de données via Singleton
+            $pdo = Database::getInstance()->getConnection(); // Utilisation du Singleton
+        
+            // Requête SQL pour récupérer les voitures
             $sql = "SELECT marque, modele, annee, prix, couleur, image_url FROM voiture";
             $stmt = $pdo->prepare($sql);
-            
-            // Exécuter la requête
             $stmt->execute();
-
+        
             // Boucler sur les résultats
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                // Créer un objet Voiture pour chaque résultat
                 $voiture = new Voiture($row['marque'], $row['modele'], $row['prix'], $row['couleur'], $row['annee'], $row['image_url']);
-                $voiture->afficher(); // Appeler la méthode afficher
+                $voiture->afficher();
             }
         } catch (PDOException $e) {
             echo 'Erreur : ' . $e->getMessage();
