@@ -10,10 +10,12 @@
 <header>
     <div class="conteneur">
         <div class="recherche">
-            <input type="text" class="searchTerm" placeholder="Recherche">
+        <form method="GET" action="index.php">
+            <input type="text" name="searchTerm" class="searchTerm" placeholder="Recherche">
             <button type="submit" class="searchButton">
                 <i class="fa fa-search"></i>
             </button>
+            </form>
         </div>
     </div>
 </header>
@@ -24,17 +26,29 @@
         ini_set('display_errors', 1);
         
         include_once '../model/voiture.php'; 
+        include_once '../model/Database.php'; 
 
+
+        $searchTerm = isset($_GET['searchTerm']) ? $_GET['searchTerm'] : '';
+
+        // Connexion à la base de données
         try {
-            // Connexion à la base de données via Singleton
-            $pdo = Database::getInstance()->getConnection(); // Utilisation du Singleton
+            $pdo = new PDO('mysql:host=localhost;dbname=projet', 'root', 'root');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-            // Requête SQL pour récupérer les voitures
-            $sql = "SELECT marque, modele, annee, prix, couleur, image_url FROM voiture";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
+            // Si une recherche est effectuée, filtrer par marque
+            if (!empty($searchTerm)) {
+                $sql = "SELECT marque, modele, annee, prix, couleur, image_url FROM voiture WHERE marque LIKE :searchTerm";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
+            } else {
+                // Sinon, afficher toutes les voitures
+                $sql = "SELECT marque, modele, annee, prix, couleur, image_url FROM voiture";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+            }
         
-            // Boucler sur les résultats
+            // Afficher les résultats
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $voiture = new Voiture($row['marque'], $row['modele'], $row['prix'], $row['couleur'], $row['annee'], $row['image_url']);
                 $voiture->afficher();
