@@ -28,9 +28,9 @@
         try {
             // Connexion à la base de données via Singleton
             $pdo = Database::getInstance()->getConnection(); // Utilisation du Singleton
-        
+            $vts = new PDO('mysql:host=localhost;dbname=projet', 'root', '');
             // Requête SQL pour récupérer les voitures
-            $sql = "SELECT marque, modele, annee, prix, couleur, image_url FROM voiture";
+            $sql = $vts->prepare ("SELECT marque, modele, annee, prix, couleur, image_url FROM voiture");
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
         
